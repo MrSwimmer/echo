@@ -1,0 +1,1 @@
+web: $START_SCRIPT_PATH
