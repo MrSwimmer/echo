@@ -5,6 +5,5 @@ data class Request(
     val markup: Markup,
     val nlu: Nlu,
     val original_utterance: String,
-    val payload: Payload,
     val type: String
 )
