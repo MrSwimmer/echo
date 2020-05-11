@@ -8,7 +8,7 @@ import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 
 fun main(args: Array<String>) {
-    val server = embeddedServer(Netty) {
+    val server = embeddedServer(Netty, port = 8080) {
         routing {
             get("/lol") {
                 call.respondText { "Лол" }
@@ -17,4 +17,3 @@ fun main(args: Array<String>) {
     }
     server.start(wait = true)
 }
-
