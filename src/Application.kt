@@ -4,9 +4,11 @@ import io.ktor.application.*
 import io.ktor.features.ContentNegotiation
 import io.ktor.gson.gson
 import io.ktor.http.ContentType
+import io.ktor.response.respond
 import io.ktor.response.respondText
 import io.ktor.routing.Routing
 import io.ktor.routing.get
+import io.ktor.routing.post
 import io.ktor.routing.route
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.EngineMain
@@ -30,8 +32,8 @@ fun Application.module() {
 
     install(Routing) {
         route("/") {
-            get {
-                call.respondText(call.request.toString())
+            post {
+                call.respond("Привет")
             }
         }
     }
