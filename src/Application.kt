@@ -34,7 +34,7 @@ fun Application.module() {
     install(Routing) {
         route("/") {
             post {
-                val aliceRequest = call.receive<AliceRequest>()
+                // val aliceRequest = call.receive<AliceRequest>()
                 val response = Response(text = "Пошел нахуй", end_session = false)
                 val aliceResponse = AliceResponse(response, "1.0")
                 call.respond(aliceResponse)
