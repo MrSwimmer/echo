@@ -1,7 +1,7 @@
 package model
 
 data class Session(
-    val application: ApplicationX,
+    val application: Application,
     val message_id: Int,
     val new: Boolean,
     val session_id: String,
