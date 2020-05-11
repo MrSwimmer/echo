@@ -20,12 +20,9 @@ fun main(args: Array<String>) {
 
 fun Application.module() {
     install(Routing) {
-        route("/api") {
-            get("/lol") {
-                call.respondText("Hello World!", ContentType.Text.Plain)
-            }
-            get("/demo") {
-                call.respondText("HELLO WORLD!")
+        route("/") {
+            get {
+                call.respondText(call.request.toString())
             }
         }
     }
