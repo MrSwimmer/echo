@@ -31,15 +31,12 @@ class ParserService(
                 groupIds.forEach { groupId ->
                     val response =
                         client.get<String>("https://api.vk.com/method/wall.get?owner_id=-$groupId&access_token=$vkToken&v=5.103&extended=1&count=100")
-
-                    println("vkResponse $response")
-
                     val vkResponse = gson.fromJson(response, VKResponse::class.java)
 
                     vkResponse.response?.items?.filter {
                         it.markedAsAds != 1
                     }?.filter {
-                        it.attachments?.size == 0
+                        it.attachments?.size ?: 0 == 0
                     }?.filter {
                         it.text?.length ?: 1025 <= 1024
                     }?.map {
