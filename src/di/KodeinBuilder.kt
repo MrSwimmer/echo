@@ -35,7 +35,8 @@ class KodeinBuilder(private val environment: ApplicationEnvironment) {
             }
             bind<Gson>() with eagerSingleton { Gson() }
             bind<JokeRepository>() with eagerSingleton { JokeRepository() }
-            val vkToken = environment.config.property("db.jdbcUrl").getString()
+            val vkToken = environment.config.property("vk.toke").getString()
+            print("vkToken $vkToken")
             bind<ParserService>() with eagerSingleton { ParserService(instance(), instance(), vkToken) }
             bind<JokeService>() with eagerSingleton { JokeService(instance()) }
             bind<RoutingV1>() with eagerSingleton { RoutingV1(instance(), instance()) }
