@@ -1,15 +1,27 @@
 buildscript {
     repositories {
         jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
     
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "gradle.plugin.org.flywaydb:gradle-plugin-publishing:6.4.3"
     }
 }
 
 apply plugin: 'kotlin'
 apply plugin: 'application'
+apply plugin: "org.flywaydb.flyway"
+
+flyway {
+    url = System.getenv("DB_URL")
+    user = System.getenv("DB_USER")
+    password = System.getenv("DB_PASSWORD")
+    locations = "filesystem:resources/db/migration"
+}
 
 group 'ru.memeapp.echo'
 version '0.0.1'
@@ -30,13 +42,23 @@ repositories {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    implementation "io.ktor:ktor-server-netty:$ktor_version"
+
     implementation "ch.qos.logback:logback-classic:$logback_version"
+
     implementation "io.ktor:ktor-client-core:$ktor_version"
     implementation "io.ktor:ktor-client-core-jvm:$ktor_version"
     implementation "io.ktor:ktor-client-apache:$ktor_version"
+    implementation("io.ktor:ktor-server-cio:$ktor_version")
     implementation "io.ktor:ktor-gson:1.2.4"
     testImplementation "io.ktor:ktor-server-tests:$ktor_version"
+
+    implementation("org.postgresql:postgresql:42.2.2")
+    implementation("org.flywaydb:flyway-core:6.4.3")
+    implementation("org.jetbrains.exposed:exposed:0.17.7")
+    implementation("com.zaxxer:HikariCP:2.7.8")
+
+    implementation("org.kodein.di:kodein-di-generic-jvm:6.3.3")
+    implementation("org.kodein.di:kodein-di-framework-ktor-server-jvm:6.3.3")
 }
 
 tasks.register("stage") {
