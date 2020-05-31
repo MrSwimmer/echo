@@ -25,7 +25,7 @@ flyway {
 
 group 'ru.memeapp.echo'
 version '0.0.1'
-mainClassName = "Application.kt"
+mainClassName = "ru.memeapp.echo.Application.kt"
 
 sourceSets {
     main.kotlin.srcDirs = main.java.srcDirs = ['src']
