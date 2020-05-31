@@ -11,19 +11,13 @@ import io.ktor.routing.Routing
 import io.ktor.routing.get
 import io.ktor.routing.post
 import io.ktor.routing.route
-import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.EngineMain
-import io.ktor.server.netty.Netty
 import model.AliceRequest
 import model.AliceResponse
 import model.Response
 
 fun main(args: Array<String>) {
     EngineMain.main(args)
-    val server = embeddedServer(Netty) {
-
-    }
-    server.start()
 }
 
 fun Application.module() {
