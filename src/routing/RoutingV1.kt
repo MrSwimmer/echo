@@ -9,9 +9,11 @@ import io.ktor.routing.*
 import model.AliceRequest
 import model.AliceResponse
 import model.Response
+import ru.memeapp.echo.service.JokeService
 
 class RoutingV1(
-    private val gson: Gson
+    private val gson: Gson,
+    private val jokeService: JokeService
 ) {
     fun setup(configuration: Routing) {
         with(configuration) {
@@ -19,12 +21,12 @@ class RoutingV1(
                 post {
                     val aliceRequest = call.receive<String>()
                     val request = gson.fromJson(aliceRequest, AliceRequest::class.java)
-                    val response = Response(text = request.request.original_utterance, end_session = false)
+                    val response = Response(text = jokeService.get(), end_session = false)
                     val aliceResponse = AliceResponse(response, "1.0")
                     call.respond(aliceResponse)
                 }
                 get {
-                    call.respondText("get")
+                    call.respondText(jokeService.getAll().toString())
                 }
             }
         }

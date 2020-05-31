@@ -8,6 +8,9 @@ import org.kodein.di.generic.eagerSingleton
 import db.DatabaseFactory
 import org.kodein.di.generic.instance
 import routing.RoutingV1
+import ru.memeapp.echo.repository.JokeRepository
+import ru.memeapp.echo.service.JokeService
+import ru.memeapp.echo.service.ParserService
 import java.net.URI
 
 class KodeinBuilder(private val environment: ApplicationEnvironment) {
@@ -31,7 +34,11 @@ class KodeinBuilder(private val environment: ApplicationEnvironment) {
                 }
             }
             bind<Gson>() with eagerSingleton { Gson() }
-            bind<RoutingV1>() with eagerSingleton { RoutingV1(instance()) }
+            bind<JokeRepository>() with eagerSingleton { JokeRepository() }
+            val vkToken = environment.config.property("db.jdbcUrl").getString()
+            bind<ParserService>() with eagerSingleton { ParserService(instance(), instance(), vkToken) }
+            bind<JokeService>() with eagerSingleton { JokeService(instance()) }
+            bind<RoutingV1>() with eagerSingleton { RoutingV1(instance(), instance()) }
         }
     }
 }
