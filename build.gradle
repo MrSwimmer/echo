@@ -25,7 +25,7 @@ flyway {
 
 group 'ru.memeapp.echo'
 version '0.0.1'
-mainClassName = "io.ktor.server.netty.EngineMain"
+mainClassName = "Application.kt"
 
 sourceSets {
     main.kotlin.srcDirs = main.java.srcDirs = ['src']
