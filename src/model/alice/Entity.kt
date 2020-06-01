@@ -1,4 +1,4 @@
-package model
+package model.alice
 
 data class Entity(
     val tokens: Tokens,

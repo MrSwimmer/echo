@@ -1,4 +1,4 @@
-package model
+package model.alice
 
 data class Meta(
     val client_id: String,

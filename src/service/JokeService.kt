@@ -11,4 +11,10 @@ class JokeService(
 
     suspend fun get() =
         jokeRepository.getAll().random()
+
+    suspend fun getJoke() =
+        jokeRepository.getAllJokes().random()
+
+    suspend fun getHumoresque() =
+        jokeRepository.getAllHumoresques().random()
 }

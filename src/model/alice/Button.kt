@@ -1,4 +1,4 @@
-package model
+package model.alice
 
 data class Button(
     val hide: Boolean?,

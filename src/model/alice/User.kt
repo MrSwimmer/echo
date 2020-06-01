@@ -1,4 +1,4 @@
-package model
+package model.alice
 
 data class User(
     val access_token: String,

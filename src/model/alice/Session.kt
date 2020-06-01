@@ -1,4 +1,4 @@
-package model
+package model.alice
 
 data class Session(
     val application: Application,

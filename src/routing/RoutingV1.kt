@@ -6,9 +6,9 @@ import io.ktor.request.receive
 import io.ktor.response.respond
 import io.ktor.response.respondText
 import io.ktor.routing.*
-import model.AliceRequest
-import model.AliceResponse
-import model.Response
+import model.alice.AliceRequest
+import model.alice.AliceResponse
+import model.alice.Response
 import ru.memeapp.echo.service.JokeService
 
 class RoutingV1(
@@ -21,14 +21,55 @@ class RoutingV1(
                 post {
                     val aliceRequest = call.receive<String>()
                     val request = gson.fromJson(aliceRequest, AliceRequest::class.java)
-                    val response = Response(text = jokeService.get(), end_session = false)
+
+                    val endSession = goodBye(request)
+                    val responseText = createResponseText(request)
+
+                    val response = Response(text = responseText, end_session = endSession)
                     val aliceResponse = AliceResponse(response, "1.0")
                     call.respond(aliceResponse)
                 }
+
                 get {
                     call.respondText(jokeService.getAll().toString())
                 }
             }
         }
     }
+
+    private suspend fun createResponseText(request: AliceRequest) =
+        when {
+            newSession(request) -> {
+                """
+                    Привет! Ты попал в мир анекдотов и юморесок.
+                    Чтобы послушать анекдот - скажи расскажи анекдот,
+                    чтобы послушать юмореску - скажи расскажи юмореску,
+                    чтобы выйти из мира анекдотов и юморесок - скажи пока
+                """.trimIndent()
+            }
+
+            requestJoke(request) -> {
+                jokeService.getJoke()
+            }
+
+            requestHumoresque(request) -> {
+                jokeService.getHumoresque()
+            }
+
+            else -> {
+                jokeService.get()
+            }
+        }
+
+    private fun goodBye(request: AliceRequest) =
+        request.request.nlu.tokens.any { it.contains("пока") }
+
+    private fun newSession(request: AliceRequest) =
+        request.session.new
+
+    private fun requestJoke(request: AliceRequest) =
+        request.request.nlu.tokens.any { it.contains("анекдот") }
+
+    private fun requestHumoresque(request: AliceRequest) =
+        request.request.nlu.tokens.any { it.contains("юмореск") }
 }

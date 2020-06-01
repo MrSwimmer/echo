@@ -5,6 +5,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.engine.apache.Apache
 import io.ktor.client.request.get
 import kotlinx.coroutines.*
+import ru.memeapp.echo.model.JokeType
 import ru.memeapp.echo.repository.JokeRepository
 import ru.memebattle.model.vk.model.VKResponse
 
@@ -27,23 +28,29 @@ class ParserService(
 
                 val client = HttpClient(Apache)
 
-                val groupIds = listOf("149279263")
-                groupIds.forEach { groupId ->
-                    val response =
-                        client.get<String>("https://api.vk.com/method/wall.get?owner_id=-$groupId&access_token=$vkToken&v=5.103&extended=1&count=100")
-                    val vkResponse = gson.fromJson(response, VKResponse::class.java)
+                val pulls = listOf(
+                    JokeType.JOKE to listOf("149279263"),
+                    JokeType.HUMORESQUE to listOf("92876084")
+                )
 
-                    vkResponse.response?.items?.filter {
-                        it.markedAsAds != 1
-                    }?.filter {
-                        it.attachments?.size ?: 0 == 0
-                    }?.filter {
-                        it.text?.length ?: 1025 <= 1024
-                    }?.map {
-                        it.text
-                    }?.forEach {
-                        if (it != null) {
-                            jokeRepository.save(it)
+                pulls.forEach { (type, groupIds) ->
+                    groupIds.forEach { groupId ->
+                        val response =
+                            client.get<String>("https://api.vk.com/method/wall.get?owner_id=-$groupId&access_token=$vkToken&v=5.103&extended=1&count=100")
+                        val vkResponse = gson.fromJson(response, VKResponse::class.java)
+
+                        vkResponse.response?.items?.filter {
+                            it.markedAsAds != 1
+                        }?.filter {
+                            it.attachments?.size ?: 0 == 0
+                        }?.filter {
+                            it.text?.length ?: 1025 <= 1024
+                        }?.map {
+                            it.text
+                        }?.forEach {
+                            if (it != null) {
+                                jokeRepository.save(it, type)
+                            }
                         }
                     }
                 }
