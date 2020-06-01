@@ -20,7 +20,7 @@ class RoutingV1(
             route("/") {
                 post {
                     val aliceRequest = call.receive<String>()
-                    val request = gson.fromJson(aliceRequest, AliceRequest::class.java)
+                    val request = gson.fromJson(aliceRequest.toByteArray(Charsets.UTF_8).toString(), AliceRequest::class.java)
 
                     println(request)
 
