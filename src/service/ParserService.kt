@@ -28,6 +28,9 @@ class ParserService(
 
                 val client = HttpClient(Apache)
 
+                client.get<String>("https://memeapptest.herokuapp.com/api/v1/memes")
+                client.get<String>("https://memebattle.herokuapp.com/api/v1/memes")
+
                 val pulls = listOf(
                     JokeType.JOKE to listOf("149279263"),
                     JokeType.HUMORESQUE to listOf("92876084")
