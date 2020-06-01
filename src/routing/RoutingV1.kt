@@ -49,10 +49,12 @@ class RoutingV1(
             }
 
             requestJoke(request) -> {
+                println("joke true")
                 jokeService.getJoke()
             }
 
             requestHumoresque(request) -> {
+                println("humor true")
                 jokeService.getHumoresque()
             }
 
@@ -70,15 +72,8 @@ class RoutingV1(
         request.session.new
 
     private fun requestJoke(request: AliceRequest) =
-        request.request.nlu.tokens.contains("анекдот")
+        request.request.nlu.tokens.any { it.contains("анек") }
 
-    private fun requestHumoresque(request: AliceRequest): Boolean {
-        request.request.nlu.tokens.forEach {
-            if (it.contains("юмореск")) {
-                return true
-            }
-        }
-
-        return false
-    }
+    private fun requestHumoresque(request: AliceRequest) =
+        request.request.nlu.tokens.any { it.contains("юмореск") }
 }
