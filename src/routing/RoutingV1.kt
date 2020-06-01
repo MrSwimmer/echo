@@ -22,7 +22,8 @@ class RoutingV1(
                     val aliceRequest = call.receive<String>()
                     val request = gson.fromJson(aliceRequest, AliceRequest::class.java)
 
-                    println(request)
+                    println(aliceRequest)
+                    println(String(aliceRequest.toByteArray(), Charsets.UTF_8))
 
                     val endSession = goodBye(request)
                     val responseText = createResponseText(request)
