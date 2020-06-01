@@ -70,8 +70,15 @@ class RoutingV1(
         request.session.new
 
     private fun requestJoke(request: AliceRequest) =
-        request.request.nlu.tokens.any { it.contains("анекдот") }
+        request.request.nlu.tokens.contains("анекдот")
 
-    private fun requestHumoresque(request: AliceRequest) =
-        request.request.nlu.tokens.any { it.contains("юмореск") }
+    private fun requestHumoresque(request: AliceRequest): Boolean {
+        request.request.nlu.tokens.forEach {
+            if (it.contains("юмореск")) {
+                return true
+            }
+        }
+
+        return false
+    }
 }
