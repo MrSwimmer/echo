@@ -24,7 +24,9 @@ class RoutingV1(
             route("/") {
                 post {
                     val aliceRequest = call.receiveText()
-                    val request = gson.fromJson(aliceRequest, AliceRequest::class.java)
+                    val bytes = aliceRequest.toByteArray(Charsets.ISO_8859_1)
+                    val encodeRequest = String(bytes, Charsets.UTF_8)
+                    val request = gson.fromJson(encodeRequest, AliceRequest::class.java)
 
                     println(aliceRequest)
 
@@ -78,12 +80,7 @@ class RoutingV1(
         request.session.new
 
     private fun requestJoke(request: AliceRequest) =
-        request.request.nlu.tokens.map {
-            println(it)
-            val bytes = it.toByteArray(Charsets.ISO_8859_1)
-            String(bytes, Charsets.UTF_8)
-        }.any {
-            println(it)
+        request.request.nlu.tokens.any {
             it.contains("анек")
         }
 
