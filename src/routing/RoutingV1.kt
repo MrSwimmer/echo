@@ -2,7 +2,6 @@ package routing
 
 import com.google.gson.Gson
 import io.ktor.application.call
-import io.ktor.request.receive
 import io.ktor.request.receiveText
 import io.ktor.response.respond
 import io.ktor.response.respondText
@@ -12,8 +11,6 @@ import model.alice.AliceRequest
 import model.alice.AliceResponse
 import model.alice.Response
 import ru.memeapp.echo.service.JokeService
-import java.nio.charset.Charset
-import java.nio.charset.StandardCharsets
 
 class RoutingV1(
     private val gson: Gson,
@@ -49,11 +46,20 @@ class RoutingV1(
         when {
             newSession(request) -> {
                 """
-                    Привет! Ты попал в мир анекдотов и юморесок.
+                    Я вас категорически приветствую! Ты попал в мир анекдотов и юморесок.
                     Чтобы послушать анекдот, скажи команду - расскажи анекдот,
                     чтобы послушать юмореску, скажи команду - расскажи юмореску,
                     чтобы выйти из мира анекдотов и юморесок, скажи команду - пока
                 """.trimIndent()
+            }
+
+            help(request) || whatCan(request)  -> {
+                """
+                    Я умею смешить людей!
+                    Чтобы послушать анекдот, скажи команду - расскажи анекдот,
+                    чтобы послушать юмореску, скажи команду - расскажи юмореску,
+                    чтобы выйти из мира анекдотов и юморесок, скажи команду - пока
+                """.trimMargin()
             }
 
             requestJoke(request) -> {
@@ -74,14 +80,20 @@ class RoutingV1(
         }
 
     private fun goodBye(request: AliceRequest) =
-        request.request.nlu.tokens.any { it.contains("пока") }
+        request.request.original_utterance.contains("пока")
 
     private fun newSession(request: AliceRequest) =
         request.session.new
 
+    private fun help(request: AliceRequest) =
+        request.request.original_utterance == "помощь"
+
+    private fun whatCan(request: AliceRequest) =
+        request.request.original_utterance == "что ты умеешь"
+
     private fun requestJoke(request: AliceRequest) =
-        request.request.nlu.tokens.any { it.contains("анек") }
+        request.request.original_utterance.contains("анек")
 
     private fun requestHumoresque(request: AliceRequest) =
-        request.request.nlu.tokens.any { it.contains("юморес") }
+        request.request.original_utterance.contains("юморес")
 }
