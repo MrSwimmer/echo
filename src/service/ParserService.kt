@@ -58,7 +58,7 @@ class ParserService(
                     }
                 }
 
-                delay(60000 * 30)
+                delay(60000 * 20)
             }
         }
     }

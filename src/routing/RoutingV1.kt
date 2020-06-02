@@ -80,10 +80,8 @@ class RoutingV1(
         request.session.new
 
     private fun requestJoke(request: AliceRequest) =
-        request.request.nlu.tokens.any {
-            it.contains("анек")
-        }
+        request.request.nlu.tokens.any { it.contains("анек") }
 
     private fun requestHumoresque(request: AliceRequest) =
-        request.request.nlu.tokens.any { it.contains("юмореск") }
+        request.request.nlu.tokens.any { it.contains("юморес") }
 }
