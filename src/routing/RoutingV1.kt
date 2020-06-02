@@ -75,7 +75,10 @@ class RoutingV1(
         request.session.new
 
     private fun requestJoke(request: AliceRequest) =
-        request.request.nlu.tokens.map { StandardCharsets.UTF_8.encode(it).toString() }.any { it.contains("анек") }
+        request.request.nlu.tokens.map { StandardCharsets.UTF_8.encode(it).toString() }.any {
+            println(it)
+            it.contains("анек")
+        }
 
     private fun requestHumoresque(request: AliceRequest) =
         request.request.nlu.tokens.any { it.contains("юмореск") }
