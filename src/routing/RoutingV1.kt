@@ -6,6 +6,7 @@ import io.ktor.request.receive
 import io.ktor.response.respond
 import io.ktor.response.respondText
 import io.ktor.routing.*
+import io.ktor.utils.io.core.toByteArray
 import model.alice.AliceRequest
 import model.alice.AliceResponse
 import model.alice.Response
@@ -77,7 +78,7 @@ class RoutingV1(
 
     private fun requestJoke(request: AliceRequest) =
         request.request.nlu.tokens.map {
-            val bytes = it.toByteArray()
+            val bytes = it.toByteArray(Charsets.UTF_8)
             String(bytes, Charsets.UTF_8)
         }.any {
             println(it)
