@@ -3,6 +3,7 @@ package routing
 import com.google.gson.Gson
 import io.ktor.application.call
 import io.ktor.request.receive
+import io.ktor.request.receiveText
 import io.ktor.response.respond
 import io.ktor.response.respondText
 import io.ktor.routing.*
@@ -22,7 +23,7 @@ class RoutingV1(
         with(configuration) {
             route("/") {
                 post {
-                    val aliceRequest = call.receive<String>()
+                    val aliceRequest = call.receiveText()
                     val request = gson.fromJson(aliceRequest, AliceRequest::class.java)
 
                     println(aliceRequest)
@@ -78,6 +79,7 @@ class RoutingV1(
 
     private fun requestJoke(request: AliceRequest) =
         request.request.nlu.tokens.map {
+            println(it)
             val bytes = it.toByteArray(Charsets.UTF_8)
             String(bytes, Charsets.UTF_8)
         }.any {
