@@ -86,10 +86,10 @@ class RoutingV1(
         request.session.new
 
     private fun help(request: AliceRequest) =
-        request.request.original_utterance == "помощь"
+        request.request.original_utterance.contains("помощь")
 
     private fun whatCan(request: AliceRequest) =
-        request.request.original_utterance == "что ты умеешь"
+        request.request.original_utterance.contains("что ты умеешь")
 
     private fun requestJoke(request: AliceRequest) =
         request.request.original_utterance.contains("анек")
