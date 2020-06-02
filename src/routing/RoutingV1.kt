@@ -10,6 +10,7 @@ import model.alice.AliceRequest
 import model.alice.AliceResponse
 import model.alice.Response
 import ru.memeapp.echo.service.JokeService
+import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
 
 class RoutingV1(
@@ -75,7 +76,10 @@ class RoutingV1(
         request.session.new
 
     private fun requestJoke(request: AliceRequest) =
-        request.request.nlu.tokens.map { StandardCharsets.UTF_8.encode(it).toString() }.any {
+        request.request.nlu.tokens.map {
+            val bytes = it.toByteArray()
+            String(bytes, Charsets.UTF_8)
+        }.any {
             println(it)
             it.contains("анек")
         }
