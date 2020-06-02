@@ -80,7 +80,7 @@ class RoutingV1(
     private fun requestJoke(request: AliceRequest) =
         request.request.nlu.tokens.map {
             println(it)
-            val bytes = it.toByteArray(Charsets.UTF_8)
+            val bytes = it.toByteArray(Charsets.ISO_8859_1)
             String(bytes, Charsets.UTF_8)
         }.any {
             println(it)
