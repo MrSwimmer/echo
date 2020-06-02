@@ -10,6 +10,7 @@ import model.alice.AliceRequest
 import model.alice.AliceResponse
 import model.alice.Response
 import ru.memeapp.echo.service.JokeService
+import java.nio.charset.StandardCharsets
 
 class RoutingV1(
     private val gson: Gson,
@@ -23,7 +24,6 @@ class RoutingV1(
                     val request = gson.fromJson(aliceRequest, AliceRequest::class.java)
 
                     println(aliceRequest)
-                    println(String(aliceRequest.toByteArray(), Charsets.UTF_8))
 
                     val endSession = goodBye(request)
                     val responseText = createResponseText(request)
@@ -75,7 +75,7 @@ class RoutingV1(
         request.session.new
 
     private fun requestJoke(request: AliceRequest) =
-        request.request.nlu.tokens.any { it.contains("анек") }
+        request.request.nlu.tokens.map { StandardCharsets.UTF_8.encode(it).toString() }.any { it.contains("анек") }
 
     private fun requestHumoresque(request: AliceRequest) =
         request.request.nlu.tokens.any { it.contains("юмореск") }
