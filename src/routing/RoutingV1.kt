@@ -80,20 +80,20 @@ class RoutingV1(
         }
 
     private fun goodBye(request: AliceRequest) =
-        request.request.original_utterance.contains("пока")
+        request.request.original_utterance.toLowerCase().contains("пока")
 
     private fun newSession(request: AliceRequest) =
         request.session.new
 
     private fun help(request: AliceRequest) =
-        request.request.original_utterance.contains("помощь")
+        request.request.original_utterance.toLowerCase().contains("помощь")
 
     private fun whatCan(request: AliceRequest) =
-        request.request.original_utterance.contains("что ты умеешь")
+        request.request.original_utterance.toLowerCase().contains("что ты умеешь")
 
     private fun requestJoke(request: AliceRequest) =
-        request.request.original_utterance.contains("анек")
+        request.request.original_utterance.toLowerCase().contains("анек")
 
     private fun requestHumoresque(request: AliceRequest) =
-        request.request.original_utterance.contains("юморес")
+        request.request.original_utterance.toLowerCase().contains("юморес")
 }
